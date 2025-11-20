@@ -1,7 +1,7 @@
 # app/core/aop.py
 import inspect
 from functools import wraps
-from typing import Any, Awaitable, Callable, Optional
+from typing import Any, Callable
 
 Func = Callable[..., Any]
 
@@ -50,13 +50,8 @@ def after(after_func: Func):
     return decorator
 
 
-def around(
-    before_func: Optional[Func] = None,
-    after_func: Optional[Func] = None,
-):
-    """
-    Aspecto más potente: puede ejecutar antes y después, con acceso al resultado.
-    """
+def around(before_func: Func | None = None, after_func: Func | None = None):
+    """Aspecto around: puede ejecutar lógica antes y después."""
     def decorator(target: Func) -> Func:
         if inspect.iscoroutinefunction(target):
             @wraps(target)
